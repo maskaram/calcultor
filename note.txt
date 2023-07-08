@@ -1,0 +1,178 @@
+first decalare variable for all input and selection
+    const numberButtons=document.querySelectorAll('[data-number]')
+    const operationButtons=document.querySelectorAll('[data-operation]')
+    const equalsButton=document.querySelector('[data-equals]')
+    const clearButton=document.querySelectorAll('[data-clear]')
+    const previousOperand = document.querySelector('[data-previous-operand]')
+    const currentOperand = document.querySelector('[data-current-operand]')
+
+create class to store all data in previous and current operand
+    class Calculator{
+    constructor(previousOperand,currentOperand){
+        this.previousOperandTextElement=previousOperandTextElement
+        this.currentOperandTextElement=currentOperandTextElement
+        this.clear()
+    }
+
+    
+}
+declare all functions you use in the calculator
+ clear(){
+
+    }
+    delete(){
+
+    }
+    appendNumber(number){
+
+    }
+    chooseOperation(operation){
+
+    }
+    compute(){
+
+    }
+    updatedisplay(){
+
+    }
+define clear functions
+     clear(){
+        this.currentOperand=''
+        this.previousOperand=''
+        this.operation=undefined
+    }
+create new calculator and put it on variable   
+    const calculator= new Calculator(previousOperandTextElement,currentOperandTextElement)
+
+create event listner to get numbers and updtae display
+    numberButtons.forEach(button=>{
+    button.addEventListener('click',()=>{
+        calculator.appendNumber(button.innerText)
+        calculator.updateDisplay()
+    })
+})
+
+define the append number functions
+     appendNumber(number){
+        if(number === '.' && this.currentOperand.includes('.'))return
+        this.currentOperand=this.currentOperand.toString() + number.toString()
+    }
+define update display function to see the new numbers 
+        updateDisplay(){
+        this.currentOperandTextElement.innerText=this.currentOperand
+
+    }
+define append function for operations
+    operationButtons.forEach(button=>{
+    button.addEventListener('click',()=>{
+        calculator.chooseOperation(button.innerText)
+        calculator.updateDisplay()
+    })
+    })
+define a function to choose operation
+    chooseOperation(operation){
+     
+        this.operation=operation
+        this.previousOperand=this.currentOperand
+        this.currentOperand=''
+
+    }
+revise update display funtion to display previous operand
+     this.previousOperandTextElement.innerText=this.previousOperand
+
+if there is no current operand to operate if you click the operator twice every thing goes on to stop this 
+    if (this.currentOperand === '') return
+
+if the previous operand has a value it need to be computed with new value 
+    put this in chooseoperation
+        if (this.previousOperand !== '') {
+        this.compute()
+      }
+
+add event listner to equals button  
+     equalsButton.addEventListener('click', button => {
+    calculator.compute()
+    calculator.updateDisplay()
+  })
+
+
+define compute function
+    compute() {
+      let computation
+      const prev = parseFloat(this.previousOperand)
+      const current = parseFloat(this.currentOperand)
+      if (isNaN(prev) || isNaN(current)) return
+      switch (this.operation) {
+        case '+':
+          computation = prev + current
+          break
+        case '-':
+          computation = prev - current
+          break
+        case '*':
+          computation = prev * current
+          break
+        case '/':
+          computation = prev / current
+          break
+        default:
+          return
+      }
+      this.currentOperand = computation
+      this.operation = undefined
+      this.previousOperand = ''
+    }
+
+define delete operand
+      deleteButton.addEventListener('click', button => {
+    calculator.delete()
+    calculator.updateDisplay()
+  })
+
+define delete function  
+     delete() {
+      this.currentOperand = this.currentOperand.toString().slice(0, -1)
+    }
+define all clear event listner
+      allClearButton.addEventListener('click', button => {
+    calculator.clear()
+    calculator.updateDisplay()
+  })
+
+
+update display to display the operators after the numbers replace previous operand updator with
+     if(this.operation != null){
+            this.previousOperandTextElement.innerText=`${this.previousOperand} ${this.operation}`
+        } else{
+            this.previousOperandTextElement.innerText=''
+        }
+
+for comma delimited values create helper function and replace current operands with that helper function 
+              getDisplayNumber(number){
+             return number
+                }
+
+         replacing
+         this.currentoperand  with 
+         this.getDisplayNumber(this.currentOperand)
+
+         this.previousOperand  with 
+         this.getDisplayNumber(this.currentOperand)
+
+finally define get display number
+     getDisplayNumber(number) {
+      const stringNumber = number.toString()
+      const integerDigits = parseFloat(stringNumber.split('.')[0])
+      const decimalDigits = stringNumber.split('.')[1]
+      let integerDisplay
+      if (isNaN(integerDigits)) {
+        integerDisplay = ''
+      } else {
+        integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
+      }
+      if (decimalDigits != null) {
+        return `${integerDisplay}.${decimalDigits}`
+      } else {
+        return integerDisplay
+      }
+    }
